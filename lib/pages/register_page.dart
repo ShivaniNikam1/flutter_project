@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ev_simulator/components/my_buttom.dart';
 import 'package:ev_simulator/components/my_textfield.dart';
 import 'package:ev_simulator/components/square_tile.dart';
@@ -72,6 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 243, 243, 243),
       resizeToAvoidBottomInset: true,
@@ -83,11 +85,23 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 50),
                 //logo
-                const Icon(
-                  Icons.lock,
-                  size: 100,
+                CachedNetworkImage(
+                  height: 100,
+                  width: 100,
+                  imageUrl:
+                      "https://assets-global.website-files.com/61d3cef6fd24fccf2c7670de/61d3cef6fd24fc41d0767242_Triveous%20Logo.png",
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome back you\'ve been missed',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 15,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.05),
                 //welcome back you been missed
 
                 const SizedBox(height: 25),
@@ -149,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 30),
 
                 //google + apple button
 
@@ -165,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
                 const SizedBox(
-                  height: 100,
+                  height: 30,
                 ),
 
                 // not a memeber ? register now

@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SquareTile extends StatelessWidget {
   final String imagePath;
@@ -24,10 +26,13 @@ class SquareTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           color: Colors.grey[300],
         ),
-        child: SvgPicture.asset(
-          imagePath,
-          height: height,
-          width: height,
+        child: CachedNetworkImage(
+          height: 40,
+          width: 40,
+          imageUrl:
+              "https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png",
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
       ),
     );

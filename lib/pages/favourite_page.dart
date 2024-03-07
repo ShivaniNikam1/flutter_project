@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ev_simulator/model/news_model.dart';
 import 'package:ev_simulator/pages/details_page.dart';
@@ -84,14 +85,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromARGB(167, 218, 214, 214),
-                                      spreadRadius: 1,
-                                      blurRadius: 10,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ],
+                                  boxShadow: const [],
+                                  border: Border.all(
+                                      color: const Color(0xffF6F6F7),
+                                      width: 1.5),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 0),
@@ -107,7 +104,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                                               BorderRadius.circular(12),
                                           color: Colors.grey,
                                           image: DecorationImage(
-                                              image: NetworkImage(
+                                              image: CachedNetworkImageProvider(
                                                   doc["urlToImage"]),
                                               fit: BoxFit.cover),
                                         ),
@@ -290,7 +287,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                                           .doc(doc.id)
                                           .delete();
                                     },
-                                    child: Container(
+                                    child: SizedBox(
                                         height: 38,
                                         width: 38,
                                         child: DecoratedBox(

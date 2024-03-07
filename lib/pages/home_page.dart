@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ev_simulator/components/my_buttom.dart';
 import 'package:ev_simulator/controllers/dropdown_controller.dart';
@@ -49,6 +50,27 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 }
+
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 200,
+                        ),
+                        Text(
+                          "An error occured ${snapshot.error}",
+                          style: GoogleFonts.poppins(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
                 return Column(
                   children: [
                     CarouselSlider(
@@ -73,123 +95,132 @@ class HomePage extends StatelessWidget {
                           .sublist(0, 5)
                           .map(
                         (i) {
-                          print("publishedAt: ${i.publishedAt}");
-                          return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                        i.urlToImage!,
-                                      ),
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.black.withOpacity(0.5),
-                                          BlendMode.darken),
-                                      fit: BoxFit.cover),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(24))),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 18, left: 18, right: 8, bottom: 18),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Chip(
-                                        backgroundColor:
-                                            const Color(0xff0B85B5),
-                                        labelPadding: EdgeInsets.zero,
-                                        elevation: 0,
-                                        shadowColor: Colors.transparent,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        side: BorderSide.none,
-                                        visualDensity: VisualDensity.compact,
-                                        label: Text(
-                                            timeago.format(i.publishedAt!),
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.white))),
-                                    const Spacer(),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            i.source!.name!
-                                                        .toString()
-                                                        .split(" ")
-                                                        .length >
-                                                    2
-                                                ? "${i.source!.name!.toString().split(" ")[0]} ${i.source!.name!.toString().split(" ")[1]}"
-                                                : i.source!.name!.toString(),
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.white)),
-                                        const SizedBox(
-                                          width: 5,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          NewsDetailPage(news: i)));
+                            },
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    image: DecorationImage(
+                                        image: CachedNetworkImageProvider(
+                                          i.urlToImage!,
                                         ),
-                                        const Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: FaIcon(
-                                                FontAwesomeIcons.certificate,
-                                                size: 10,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Icon(
-                                                Icons.verified,
-                                                size: 15,
-                                                color: Color(0xff0B85B5),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        const FaIcon(
-                                          FontAwesomeIcons.solidCircle,
-                                          size: 4,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.3,
-                                          child: Text(
-                                            i.author == null
-                                                ? "Unknown"
-                                                : i.author!
-                                                    .toString()
-                                                    .split(",")[0],
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.white),
-                                            overflow: TextOverflow.ellipsis,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black.withOpacity(0.5),
+                                            BlendMode.darken),
+                                        fit: BoxFit.cover),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(24))),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 18, left: 18, right: 8, bottom: 18),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Chip(
+                                          backgroundColor:
+                                              const Color(0xff0B85B5),
+                                          labelPadding: EdgeInsets.zero,
+                                          elevation: 0,
+                                          shadowColor: Colors.transparent,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          side: BorderSide.none,
+                                          visualDensity: VisualDensity.compact,
+                                          label: Text(
+                                              timeago.format(i.publishedAt!),
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.white))),
+                                      const Spacer(),
+                                      Row(
+                                        children: [
+                                          Text(
+                                              i.source!.name!
+                                                          .toString()
+                                                          .split(" ")
+                                                          .length >
+                                                      2
+                                                  ? "${i.source!.name!.toString().split(" ")[0]} ${i.source!.name!.toString().split(" ")[1]}"
+                                                  : i.source!.name!.toString(),
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.white)),
+                                          const SizedBox(
+                                            width: 5,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      i.title!.toString().split("-")[0],
-                                      style: GoogleFonts.inter(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ));
+                                          const Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.certificate,
+                                                  size: 10,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Icon(
+                                                  Icons.verified,
+                                                  size: 15,
+                                                  color: Color(0xff0B85B5),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          const FaIcon(
+                                            FontAwesomeIcons.solidCircle,
+                                            size: 4,
+                                            color: Colors.white,
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.3,
+                                            child: Text(
+                                              i.author == null
+                                                  ? "Unknown"
+                                                  : i.author!
+                                                      .toString()
+                                                      .split(",")[0],
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.white),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        i.title!.toString().split("-")[0],
+                                        style: GoogleFonts.inter(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          );
                         },
                       ).toList(),
                     ),
@@ -230,51 +261,71 @@ class HomePage extends StatelessWidget {
                                                       .toList()
                                                       .length -
                                                   1)
-                                          .map((e) => Container(
-                                                margin: const EdgeInsets.all(5),
-                                                height: 100,
-                                                width: 100,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  color: Colors.grey,
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          e.urlToImage!),
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                              Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              BlendMode.darken),
-                                                      fit: BoxFit.cover),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    children: [
-                                                      const Spacer(),
-                                                      SizedBox(
-                                                        child: Text(
-                                                          e.title!
-                                                              .toString()
-                                                              .split("-")[0],
-                                                          style:
-                                                              GoogleFonts.inter(
-                                                            fontSize: 14,
-                                                            letterSpacing: 0.7,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.white,
-                                                          ),
-                                                          maxLines: 3,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                          .map((e) => InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              NewsDetailPage(
+                                                                  news: e)));
+                                                },
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.all(5),
+                                                  height: 100,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    color: Colors.grey,
+                                                    image: DecorationImage(
+                                                        image:
+                                                            CachedNetworkImageProvider(
+                                                          e.urlToImage!,
                                                         ),
-                                                      ),
-                                                    ],
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                                Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                BlendMode
+                                                                    .darken),
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      children: [
+                                                        const Spacer(),
+                                                        SizedBox(
+                                                          child: Text(
+                                                            e.title!
+                                                                .toString()
+                                                                .split("-")[0],
+                                                            style: GoogleFonts
+                                                                .inter(
+                                                              fontSize: 14,
+                                                              letterSpacing:
+                                                                  0.7,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            maxLines: 3,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ))
@@ -327,11 +378,14 @@ class HomePage extends StatelessWidget {
                                                                           12),
                                                               color:
                                                                   Colors.grey,
-                                                              image: DecorationImage(
-                                                                  image: NetworkImage(e
-                                                                      .urlToImage!),
-                                                                  fit: BoxFit
-                                                                      .cover),
+                                                              image:
+                                                                  DecorationImage(
+                                                                      image:
+                                                                          CachedNetworkImageProvider(
+                                                                        e.urlToImage!,
+                                                                      ),
+                                                                      fit: BoxFit
+                                                                          .cover),
                                                             ),
                                                           ),
                                                           const SizedBox(
@@ -494,7 +548,7 @@ class HomePage extends StatelessWidget {
                                                         ],
                                                       ),
                                                     ),
-                                                    Divider(),
+                                                    const Divider(),
                                                   ],
                                                 ),
                                               )

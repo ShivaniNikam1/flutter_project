@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ev_simulator/components/my_buttom.dart';
 import 'package:ev_simulator/model/news_model.dart';
@@ -39,7 +41,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
       statusBarIconBrightness: Brightness.light,
     ));
 
-    timeago.setLocaleMessages('en', timeago.EnMessages());
+    checkUserConnection();
 
     FirebaseFirestore.instance
         .collection('Triveous')
@@ -87,6 +89,25 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
     });
   }
 
+  bool ActiveConnection = false;
+  String T = "";
+  Future checkUserConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          ActiveConnection = true;
+          T = "Turn off the data and repress again";
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        ActiveConnection = false;
+        T = "Turn On the data and repress again";
+      });
+    }
+  }
+
   DateTime loginClickTime =
       DateTime.now().subtract(const Duration(seconds: 10));
 
@@ -124,7 +145,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               height: size.height * 0.55,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(
+                      image: CachedNetworkImageProvider(
                         widget.news.urlToImage!,
                       ),
                       colorFilter: ColorFilter.mode(
@@ -156,6 +177,27 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                               if (isRedundentClick(DateTime.now())) {
                                 return;
                               }
+                              if (ActiveConnection == false) {
+                                AlertDialog alert = AlertDialog(
+                                  title: const Text("No Internet Connection"),
+                                  content: Text(T),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("OK"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return alert;
+                                  },
+                                );
+                                return;
+                              }
                               FirebaseFirestore.instance
                                   .collection('Triveous')
                                   .doc(user.uid)
@@ -164,10 +206,51 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   .get()
                                   .then((value) {
                                 if (value.docs.isNotEmpty || isFav == true) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text("Already saved"),
-                                  ));
+                                  //dialog
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title:
+                                                const Text("Remove from fav?"),
+                                            content: const Text(
+                                                "Are you sure you want to remove this article from favorites?"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text("Cancel")),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    FirebaseFirestore.instance
+                                                        .collection('Triveous')
+                                                        .doc(user.uid)
+                                                        .collection("favorites")
+                                                        .where("title",
+                                                            isEqualTo: widget
+                                                                .news.title)
+                                                        .get()
+                                                        .then((value) {
+                                                      value.docs.first.reference
+                                                          .delete()
+                                                          .then((value) {
+                                                        setState(() {
+                                                          isFav = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                          content: Text(
+                                                              "Removed from favorites"),
+                                                        ));
+                                                      });
+                                                    });
+                                                  },
+                                                  child: const Text("Remove"))
+                                            ],
+                                          ));
                                 } else {
                                   addToFav(widget.news, context);
                                 }
@@ -255,10 +338,10 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                               children: [
                                 CircleAvatar(
                                   radius: 16,
-                                  backgroundImage: NetworkImage(images
-                                          .isNotEmpty
-                                      ? channelName[images[0]].toString()
-                                      : "https://static.vidgyor.com/live/cnn_news18.png"),
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      images.isNotEmpty
+                                          ? channelName[images[0]].toString()
+                                          : "https://static.vidgyor.com/live/cnn_news18.png"),
                                 ),
                                 const SizedBox(
                                   width: 8,

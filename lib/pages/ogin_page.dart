@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ev_simulator/components/my_buttom.dart';
 import 'package:ev_simulator/components/my_textfield.dart';
@@ -68,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       resizeToAvoidBottomInset: true,
@@ -77,14 +79,17 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
+                SizedBox(height: size.height * 0.1),
                 //logo
-                const Icon(
-                  Icons.lock_person,
-                  size: 150,
+                CachedNetworkImage(
+                  height: 100,
+                  width: 100,
+                  imageUrl:
+                      "https://assets-global.website-files.com/61d3cef6fd24fccf2c7670de/61d3cef6fd24fc41d0767242_Triveous%20Logo.png",
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
-                const SizedBox(height: 10),
-                //welcome back you been missed
+                SizedBox(height: size.height * 0.02),
 
                 Text(
                   'Welcome back you\'ve been missed',
@@ -93,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 15,
                   ),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: size.height * 0.05),
 
                 //username
                 MyTextField(
