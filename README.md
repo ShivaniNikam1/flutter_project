@@ -1,16 +1,5 @@
-# ev_simulator
-
+# Triveous News App
 A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![s1](https://github.com/himanshugoyal77/flutter_news_app/assets/92782099/da1ed269-5ac2-4d23-9352-21a03472999a)
+![s2](https://github.com/himanshugoyal77/flutter_news_app/assets/92782099/741203f6-07e3-4fd9-afb5-91374904827d)
