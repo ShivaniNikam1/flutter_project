@@ -5,7 +5,8 @@ import 'package:ev_simulator/model/news_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  final apiKEY = "c705bc7c6d6547d98342f44c4ee66baf";
+  // final apiKEY = "c705bc7c6d6547d98342f44c4ee66baf";
+  final apiKEY = "4222fb1bba5d41cea8c02b0f81819f32";
   //"aadf90d688ae4b29b5ba3eaa7497a12c";
 
   Future<List<NewsModel>> getNews() async {

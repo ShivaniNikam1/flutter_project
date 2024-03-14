@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,45 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAOutxB8PLl8T3y4-vpBp5zdDgPaq8allk',
-    appId: '1:621067507703:web:19a5b36557c748374200f2',
-    messagingSenderId: '621067507703',
-    projectId: 'devignite-5823b',
-    authDomain: 'devignite-5823b.firebaseapp.com',
-    databaseURL: 'https://devignite-5823b-default-rtdb.firebaseio.com',
-    storageBucket: 'devignite-5823b.appspot.com',
-    measurementId: 'G-T3Q633BJZF',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCg8Y8aGSvBJj0xTk8TILvUrrxXge_zy3M',
-    appId: '1:621067507703:android:681842c659023f044200f2',
-    messagingSenderId: '621067507703',
-    projectId: 'devignite-5823b',
-    databaseURL: 'https://devignite-5823b-default-rtdb.firebaseio.com',
-    storageBucket: 'devignite-5823b.appspot.com',
+    apiKey: 'AIzaSyCifN1wQcOiYUL0qMjwwYOCVxAV0TZetws',
+    appId: '1:1095947639068:android:dae3cdfd2c75bfa73682d9',
+    messagingSenderId: '1095947639068',
+    projectId: 'newsquest-96fee',
+    storageBucket: 'newsquest-96fee.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDAvwkw0h9cfU0Q4lJmOFK9Cys0EgLnr80',
-    appId: '1:621067507703:ios:3195f7c5152c2ded4200f2',
-    messagingSenderId: '621067507703',
-    projectId: 'devignite-5823b',
-    databaseURL: 'https://devignite-5823b-default-rtdb.firebaseio.com',
-    storageBucket: 'devignite-5823b.appspot.com',
-    iosClientId: '621067507703-1v2cvq5dsog2iqlqle17vbbc310o7upo.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCgzcZyiPSyV6GB3CleYVawe3aDETD48aw',
+    appId: '1:1095947639068:ios:c1b695a8565490273682d9',
+    messagingSenderId: '1095947639068',
+    projectId: 'newsquest-96fee',
+    storageBucket: 'newsquest-96fee.appspot.com',
+    iosClientId: '1095947639068-24u874k83gkhg7vsuf1am12l1obgiton.apps.googleusercontent.com',
     iosBundleId: 'com.example.evSimulator',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDAvwkw0h9cfU0Q4lJmOFK9Cys0EgLnr80',
-    appId: '1:621067507703:ios:bb994bb1e640e3ef4200f2',
-    messagingSenderId: '621067507703',
-    projectId: 'devignite-5823b',
-    databaseURL: 'https://devignite-5823b-default-rtdb.firebaseio.com',
-    storageBucket: 'devignite-5823b.appspot.com',
-    iosClientId: '621067507703-gml99l2dh62nbufvcm29q19q5mok29gd.apps.googleusercontent.com',
-    iosBundleId: 'com.example.evSimulator.RunnerTests',
   );
 }

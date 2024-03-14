@@ -583,13 +583,6 @@ class BreakingNewsText extends StatelessWidget {
                 GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           const Spacer(),
-          const Text(
-            "View All",
-            style: TextStyle(
-                color: Color(0xff0B85B5),
-                fontSize: 14,
-                fontWeight: FontWeight.bold),
-          ),
         ],
       ),
     );
@@ -667,12 +660,6 @@ class CustomAppBar extends StatelessWidget {
       padding: const EdgeInsets.only(left: 18, right: 18, top: 45),
       child: Row(
         children: [
-          AppbarCircleWrapper(
-              icon: const FaIcon(
-            FontAwesomeIcons.bars,
-            size: 18,
-            color: Colors.black,
-          )),
           const Spacer(),
           InkWell(
             onTap: () {
